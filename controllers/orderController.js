@@ -1,13 +1,12 @@
 const { Order } = require("../models");
 const createError = require("../utils/createError");
+
 exports.createOrders = async (req, res, next) => {
-  console.log("firstName");
   try {
-    const { address, shippingCost, totalPrice, userId } = req.body;
+    const { address, shippingCost, userId } = req.body;
     const orders = await Order.create({
       address,
       shippingCost,
-      totalPrice,
       userId,
     });
     res.status(201).json({ orders });
@@ -32,7 +31,7 @@ exports.deleteOrders = async (req, res, next) => {
     // }
 
     // await orders.destroy();
-    res.json({ message: "delete oder accepted" });
+    res.json({ message: "delete order accepted" });
   } catch (err) {
     next(err);
   }

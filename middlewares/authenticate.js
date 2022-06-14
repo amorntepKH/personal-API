@@ -9,7 +9,7 @@ module.exports = async (req, res, next) => {
       createError("you are unauthorized", 401);
     }
 
-    const token = authorization.split("")[1];
+    const token = authorization.split(" ")[1];
     if (!token) {
       createError("you are unauthorized", 401);
     }

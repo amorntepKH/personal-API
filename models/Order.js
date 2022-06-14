@@ -8,10 +8,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
-    totalPrice: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-    },
   });
 
   Order.associate = (models) => {

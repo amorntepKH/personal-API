@@ -12,6 +12,7 @@ app.use(cors());
 const authRoute = require("./routes/authRoute");
 const authenticate = require("./middlewares/authenticate");
 const orderRoute = require("./routes/orderRoute");
+const productRoute = require("./routes/productRoute");
 
 const notFoundMiddleware = require("./middlewares/notFound");
 const errorMiddleware = require("./middlewares/error");
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/auth", authRoute);
 app.use("/orders", orderRoute);
+app.use("/products", productRoute);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);

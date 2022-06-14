@@ -7,7 +7,7 @@ module.exports = (sequelize, Datatypes) => {
         notEmpty: true,
       },
     },
-    price: {
+    totalPrice: {
       type: Datatypes.FLOAT,
       allowNull: false,
       validate: {
