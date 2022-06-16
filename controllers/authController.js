@@ -12,12 +12,14 @@ const genToken = (payload) =>
 
 exports.login = async (req, res, next) => {
   try {
-    const { emailOrPhone, password } = req.body;
+    const { email, password } = req.body;
+    console.log(req.body);
     const user = await User.findOne({
       where: {
-        [Op.or]: [{ email: emailOrPhone }, { phoneNumber: emailOrPhone }],
+        [Op.or]: [{ email: email }],
       },
     });
+    // console.log("#1", user);
 
     if (!user) {
       createError("invalid credential", 400);
@@ -30,7 +32,7 @@ exports.login = async (req, res, next) => {
     }
 
     const token = genToken({ id: user.id });
-    res.json({ token });
+    res.status(200).json({ token });
   } catch (err) {
     next(err);
   }
@@ -38,11 +40,10 @@ exports.login = async (req, res, next) => {
 
 exports.signup = async (req, res, next) => {
   try {
-    const { firstName, lastName, emailOrPhone, password, confirmPassword } =
-      req.body;
-
-    if (!emailOrPhone) {
-      createError("email or phone number is required", 400);
+    const { firstName, lastName, email, password, confirmPassword } = req.body;
+    console.log(email);
+    if (!email) {
+      createError("email is required", 400);
     }
 
     if (!password) {
@@ -53,19 +54,13 @@ exports.signup = async (req, res, next) => {
       createError("password and confirm password did not match", 400);
     }
 
-    const isMobilePhone = validator.isMobilePhone(emailOrPhone + "");
-    const isEmail = validator.isEmail(emailOrPhone + "");
-    if (!isMobilePhone && !isEmail) {
-      createError("email or phone number is invalid format", 400);
-    }
-
     const hashedPassword = await bcrypt.hash(password, 12);
     const user = await User.create({
       firstName,
       lastName,
-      email: isEmail ? emailOrPhone : null,
-      phoneNumber: isMobilePhone ? emailOrPhone : null,
+      email: email,
       password: hashedPassword,
+      role: "client",
     });
 
     const token = genToken({ id: user.id });

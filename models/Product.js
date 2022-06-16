@@ -7,6 +7,14 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true,
       },
     },
+    image: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+
     price: {
       type: DataTypes.FLOAT,
       allowNull: false,
@@ -22,20 +30,13 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Product.associate = (models) => {
-    Product.belongsTo(models.User, {
+    Product.hasMany(models.OrderItem, {
       foreignKey: {
-        name: "userId",
+        name: "productId",
       },
       onUpdate: "RESTRICT",
       onDelete: "RESTRICT",
-    }),
-      Product.hasMany(models.OrderItem, {
-        foreignKey: {
-          name: "productId",
-        },
-        onUpdate: "RESTRICT",
-        onDelete: "RESTRICT",
-      });
+    });
   };
 
   return Product;

@@ -9,10 +9,11 @@ const morgan = require("morgan");
 const app = express();
 app.use(cors());
 
-const authRoute = require("./routes/authRoute");
+const authRouter = require("./routes/authRoute");
+const userRouter = require("./routes/userRoute");
 const authenticate = require("./middlewares/authenticate");
-const orderRoute = require("./routes/orderRoute");
-const productRoute = require("./routes/productRoute");
+const orderRouter = require("./routes/orderRoute");
+const productRouter = require("./routes/productRoute");
 
 const notFoundMiddleware = require("./middlewares/notFound");
 const errorMiddleware = require("./middlewares/error");
@@ -24,9 +25,10 @@ if (process.env.NODE_ENV === "development") {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use("/auth", authRoute);
-app.use("/orders", orderRoute);
-app.use("/products", productRoute);
+app.use("/auth", authRouter);
+app.use("/users", authenticate, userRouter);
+app.use("/orders", orderRouter);
+app.use("/products", productRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);

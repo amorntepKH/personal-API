@@ -7,13 +7,6 @@ module.exports = (sequelize, Datatypes) => {
         notEmpty: true,
       },
     },
-    totalPrice: {
-      type: Datatypes.FLOAT,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
   });
 
   OrderItem.associate = (models) => {
