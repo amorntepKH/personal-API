@@ -43,7 +43,9 @@ exports.deleteProduct = async (req, res, next) => {
 
 exports.getProduct = async (req, res, next) => {
   try {
-    const products = await Product.findAll();
+    const products = await Product.findAll({
+      order: [["id", "desc"]],
+    });
 
     res.json({ products });
   } catch (err) {
