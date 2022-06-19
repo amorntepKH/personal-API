@@ -3,10 +3,12 @@ const createError = require("../utils/createError");
 const cloudinary = require("../utils/cloudinary");
 
 exports.createProduct = async (req, res, next) => {
-  console.log("req =====> \n", req.body);
+  // console.log("req =====> \n", req.body);
   try {
     const { name, price, isInstock } = req.body;
-
+    console.log("req.file");
+    console.log(req.file);
+    console.log(req.body);
     let image;
     if (req.file) {
       const result = await cloudinary.upload(req.file.path);
@@ -28,7 +30,9 @@ exports.createProduct = async (req, res, next) => {
 
 exports.deleteProduct = async (req, res, next) => {
   try {
+    console.log(req.params);
     const { productId } = req.params;
+    console.log(productId);
     const products = await Product.destroy({
       where: { id: productId },
     });

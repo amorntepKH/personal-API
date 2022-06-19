@@ -38,8 +38,17 @@ module.exports = (sequelize, DataTypes) => {
         name: "userId",
         allowNull: false,
       },
-      onUpdate: "RESTRICT",
-      onDelete: "RESTRICT",
+      // onUpdate: "RESTRICT",
+      // onDelete: "RESTRICT",
+    });
+
+    User.hasMany(models.Cart, {
+      foreignKey: {
+        name: "userId",
+        allowNull: false,
+      },
+      // onUpdate: "cascade",
+      // onDelete: "cascade",
     });
   };
 

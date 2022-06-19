@@ -9,8 +9,8 @@ router.get("/", productController.getProduct);
 router.post(
   "/",
   authenticate,
-  upload.single("image"),
   isAdmin,
+  upload.single("image"),
   productController.createProduct
 );
 router.delete("/:productId", productController.deleteProduct);

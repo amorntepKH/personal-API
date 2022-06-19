@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     image: {
       type: DataTypes.STRING,
-      allowNull: false,
+      // allowNull: false,
       validate: {
         notEmpty: true,
       },
@@ -34,8 +34,15 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: {
         name: "productId",
       },
-      onUpdate: "RESTRICT",
-      onDelete: "RESTRICT",
+      // onUpdate: "RESTRICT",
+      // onDelete: "RESTRICT",
+    });
+
+    Product.hasMany(models.Cart, {
+      foreignKey: {
+        name: "productId",
+        allowNull: false,
+      },
     });
   };
 
