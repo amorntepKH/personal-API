@@ -4,10 +4,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    shippingCost: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-    },
+
     totalPrice: {
       type: DataTypes.FLOAT,
       allowNull: false,

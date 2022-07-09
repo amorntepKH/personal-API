@@ -1,6 +1,7 @@
 const { Product } = require("../models");
 const createError = require("../utils/createError");
 const cloudinary = require("../utils/cloudinary");
+const res = require("express/lib/response");
 
 exports.createProduct = async (req, res, next) => {
   // console.log("req =====> \n", req.body);
@@ -52,6 +53,60 @@ exports.getProduct = async (req, res, next) => {
     });
 
     res.json({ products });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getProductById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findOne({
+      where: { id },
+    });
+    if (!product) {
+      createError("Product not found", 404);
+    }
+
+    res.status(201).json({ product });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.updateProduct = async (req, res, next) => {
+  try {
+    const { name, price, isInstock, productId } = req.body;
+    const product = await Product.findOne({
+      where: { id: productId },
+    });
+
+    if (!product) {
+      createError("Product not found", 404);
+    }
+    let image;
+    if (req.file) {
+      const splited = product.image.split("/");
+      const publicId = splited[splited.length - 1].split(".")[0];
+      await cloudinary.destroy(publicId);
+      const result = await cloudinary.upload(req.file.path);
+      image = result.secure_url;
+    }
+    if (image) {
+      product.image = image;
+    }
+
+    if (name) {
+      product.name = name;
+    }
+    if (price) {
+      product.price = price;
+    }
+    if (isInstock) {
+      product.isInstock = isInstock;
+    }
+    product.save();
+    res.json({ product });
   } catch (err) {
     next(err);
   }

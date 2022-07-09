@@ -1,15 +1,25 @@
-const { Cart } = require("../models");
+const { Cart, Product } = require("../models");
 const createError = require("../utils/createError");
 
 exports.createCarts = async (req, res, next) => {
   try {
-    const { amount, userId, productId } = req.body;
-    const carts = await Cart.create({
-      amount,
-      userId,
-      productId,
+    const { amount, productId } = req.body;
+
+    const existingCart = await Cart.findOne({
+      where: { userId: req.user.id, productId },
     });
-    res.status(201).json({ carts });
+    if (!existingCart) {
+      const carts = await Cart.create({
+        amount,
+        userId: req.user.id,
+        productId,
+      });
+      res.status(201).json({ carts });
+    } else {
+      existingCart.amount += amount;
+      existingCart.save();
+      res.status(201).json({ carts: existingCart });
+    }
   } catch (err) {
     next(err);
   }
@@ -34,7 +44,12 @@ exports.getCarts = async (req, res, next) => {
   try {
     const { id } = req.user;
 
-    const carts = await Cart.findAll({ where: { userId: id } });
+    const carts = await Cart.findAll({
+      where: { userId: id },
+      include: {
+        model: Product,
+      },
+    });
 
     res.status(201).json({ carts });
   } catch (err) {

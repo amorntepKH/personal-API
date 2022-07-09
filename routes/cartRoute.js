@@ -5,7 +5,7 @@ const authenticate = require("../middlewares/authenticate");
 const router = express.Router();
 
 router.get("/", cartController.getCarts);
-router.post("/", cartController.createCarts);
+router.post("/create", cartController.createCarts);
 router.delete("/:cartId", cartController.deleteCart);
 
 module.exports = router;

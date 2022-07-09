@@ -28,9 +28,9 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/auth", authRouter);
 app.use("/users", authenticate, userRouter);
-app.use("/orders", orderRouter);
-app.use("/products", productRouter);
-app.use("/cart", authenticate, cartRouter);
+app.use("/orders", authenticate, orderRouter);
+app.use("/products", authenticate, productRouter);
+app.use("/carts", authenticate, cartRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);

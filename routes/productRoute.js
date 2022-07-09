@@ -6,9 +6,15 @@ const upload = require("../middlewares/upload");
 const router = express.Router();
 
 router.get("/", productController.getProduct);
+router.get("/:id", productController.getProductById);
+router.patch(
+  "/update",
+  upload.single("image"),
+  productController.updateProduct
+);
+
 router.post(
   "/",
-  authenticate,
   isAdmin,
   upload.single("image"),
   productController.createProduct
